@@ -1,16 +1,34 @@
 #!/bin/sh
 
-function create_default_config() {
-    cp /scripts/files/conf.py /documents/conf.py
-    echo "created documents/conf.py"
+function resert_source_dir() {
+    if [ -d /documents/source ]; then
+        rm /documents/source
+        echo "delete documents/source/"
+    fi
+
+    if [ ! -e /documents/source ]; then
+        mkdir /documents/source
+        echo "create documents/source/"
+    fi
+
+    if [ ! -e /documents/source/_static ]; then
+        mkdir /documents/source/_static
+        echo "create documents/source/_static/"
+    fi
+
+    cp /scripts/files/conf.py /documents/source/conf.py
+    echo "created documents/source/conf.py"
+
+    echo "index.rst" > /documents/source/index.rst
+    echo "created documents/source/index.rst"
 }
 
-if [ -e /documents/conf.py ]; then
+if [ -d /documents/source ]; then
     while true; do
-        read -p 'Overwrite documents/conf.py? [Y/n]' Answer
+        read -p 'Do you want to reset documents/source/? [Y/n]' Answer
         case $Answer in
             '' | [Yy]* )
-                create_default_config
+                resert_source_dir
                 break;
                 ;;
             [Nn*] )
@@ -21,7 +39,5 @@ if [ -e /documents/conf.py ]; then
         esac
     done
 else
-    create_default_config
+    resert_source_dir
 fi
-
-
