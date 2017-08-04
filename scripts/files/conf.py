@@ -16,6 +16,7 @@ extensions = ['sphinxcontrib.blockdiag']
 
 # Fontpath for blockdiag (truetype font)
 blockdiag_fontpath = '/fonts/ipag00303/ipag.ttf'
+blockdiag_antialias = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
