@@ -12,11 +12,24 @@ import sphinx_rtd_theme
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinxcontrib.blockdiag']
+extensions = [
+    'sphinxcontrib.blockdiag',
+    'sphinxcontrib.seqdiag',
+    'sphinxcontrib.actdiag',
+    'sphinxcontrib.nwdiag',
+]
 
 # Fontpath for blockdiag (truetype font)
 blockdiag_fontpath = '/fonts/ipag00303/ipag.ttf'
+seqdiag_fontpath = '/fonts/ipag00303/ipag.ttf'
+actdiag_fontpath = '/fonts/ipag00303/ipag.ttf'
+nwdiag_fontpath = '/fonts/ipag00303/ipag.ttf'
+
+# Antialias for blockdiag (truetype font)
 blockdiag_antialias = True
+seqdiag_antialias = True
+actdiag_antialias = True
+nwdiag_antialias = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
