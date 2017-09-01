@@ -20,4 +20,7 @@ Build your documents
 docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd
 ```
 
+You can use auto-build tool.
+https://github.com/suttang/docker-sphinx-rtd-theme-auto-build
+
 Thank you.
