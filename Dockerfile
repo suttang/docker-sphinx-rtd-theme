@@ -9,6 +9,7 @@ RUN apk add --update --no-cache \
     && pip install \
         sphinx \
         sphinx_rtd_theme \
+        sphinx-autobuild \
         sphinxcontrib-blockdiag \
         sphinxcontrib-seqdiag \
         sphinxcontrib-actdiag \
