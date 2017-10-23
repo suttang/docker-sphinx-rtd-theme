@@ -37,7 +37,7 @@ docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme make
 ```
 
 This dockerfile include [sphinx-autobuild](https://github.com/GaretJax/sphinx-autobuild).
-You can use `sphinx-autobuild` with `make livehtml` or `sphinx-autobuild $DOCS $DEST`
+You can use `sphinx-autobuild` with `make livehtml` or `sphinx-autobuild $SOURCE $OUTPUT`
 
 
 ## Build dockerfile
