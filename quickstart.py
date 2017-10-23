@@ -39,7 +39,7 @@ def setup(app):
 
 additional_make = """
 livehtml:
-\tsphinx-autobuild -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+\tsphinx-autobuild -b html $(SOURCEDIR) $(BUILDDIR)/html
 """
 
 
@@ -49,7 +49,7 @@ def patch_generate(original_d, overwrite=True, silent=False, templatedir=None):
     generate(original_d, overwrite, silent=False, templatedir=None)
 
 
-def main(argv=sys.argv[1:]):
+def main(argv=sys.argv):
     # Patch original generate function
     quickstart.generate = patch_generate
 
@@ -92,4 +92,4 @@ def main(argv=sys.argv[1:]):
 
 
 if __name__ == '__main__':
-    sys.exit(main(sys.argv[1:]))
+    sys.exit(main(sys.argv))
