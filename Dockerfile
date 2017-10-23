@@ -15,8 +15,6 @@ RUN apk add --update --no-cache \
         sphinxcontrib-seqdiag \
         sphinxcontrib-actdiag \
         sphinxcontrib-nwdiag \
-    # && pip install \
-    #     sphinx-quickstart-plus \
     && wget -O ipag00303.zip http://ipafont.ipa.go.jp/old/ipafont/ipag00303.php \
     && unzip ipag00303.zip \
     && mkdir /fonts \
@@ -33,5 +31,4 @@ RUN mkdir documents
 WORKDIR /documents
 VOLUME /documents
 
-# CMD sphinx-build -b html source build
 CMD ["make", "html"]
