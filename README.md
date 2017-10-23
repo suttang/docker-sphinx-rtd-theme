@@ -5,22 +5,31 @@
 Build an image from the Dockerfile
 
 ```
-$ docker build -t "suttang/sphinx-rtd" .
+$ docker build -t "suttang/sphinx-rtd-theme" .
 ```
 
-Make default `conf.py`
+Create basic configuration
 
 ```
-docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd /scripts/init.sh
+docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme sphinx-quickstart
 ```
+
+http://docs.readthedocs.io/en/latest/getting_started.html
 
 Build your documents
 
 ```
-docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd
+docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme
 ```
 
-You can use auto-build tool.
-https://github.com/suttang/docker-sphinx-rtd-theme-auto-build
+http://docs.readthedocs.io/en/latest/builds.html
+
+or Use autobuild
+
+```
+docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme make livehtml
+```
+
+https://pypi.python.org/pypi/sphinx-autobuild
 
 Thank you.
