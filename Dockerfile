@@ -1,6 +1,7 @@
 FROM python:alpine3.6
 
 RUN apk add --update --no-cache \
+        make \
         build-base \
         zlib-dev \
         libjpeg-turbo-dev \
@@ -14,6 +15,8 @@ RUN apk add --update --no-cache \
         sphinxcontrib-seqdiag \
         sphinxcontrib-actdiag \
         sphinxcontrib-nwdiag \
+    # && pip install \
+    #     sphinx-quickstart-plus \
     && wget -O ipag00303.zip http://ipafont.ipa.go.jp/old/ipafont/ipag00303.php \
     && unzip ipag00303.zip \
     && mkdir /fonts \
@@ -21,13 +24,14 @@ RUN apk add --update --no-cache \
     && rm ipag00303.zip \
     && apk del build-base
 
-# Copy initialize scripts
-COPY scripts scripts
+COPY files files
+COPY quickstart.py /usr/local/bin/
+COPY docker-entrypoint.sh /usr/local/bin/
+ENTRYPOINT ["docker-entrypoint.sh"]
 
-# Create workspace
 RUN mkdir documents
-
 WORKDIR /documents
 VOLUME /documents
 
-CMD sphinx-build -b html source build
+# CMD sphinx-build -b html source build
+CMD ["make", "html"]

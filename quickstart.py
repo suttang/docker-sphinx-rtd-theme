@@ -1,14 +1,13 @@
-import sys
 import os
-import shutil
+import sys
+import copy
 
-from sphinx_qsp import quickstart_plus
+from sphinx import quickstart
+from sphinx.quickstart import generate
 
+d = {}
 
-def main(argv=None):
-    sphinx_blockdiag_extension = quickstart_plus.Extension(
-        "ext_blockdiag", "use blockdiag diagrams",
-        conf_py="""
+additional_config = """
 # ----- blockdiag settings
 extensions.extend([
     'sphinxcontrib.blockdiag',
@@ -27,21 +26,9 @@ seqdiag_antialias = True
 actdiag_antialias = True
 nwdiag_antialias = True
 
-"""
-    )
-
-    sphinx_rtd_theme_extension = quickstart_plus.Extension(
-        "ext_rtd_theme", "use Read the Doc theme",
-        conf_py="""
 # ----- Read the Docs Theme
 html_theme = "sphinx_rtd_theme"
 
-"""
-    )
-
-    sphinx_pdf_print_style = quickstart_plus.Extension(
-        "pdf_print_style", "use PDF print styles",
-        conf_py="""
 # ----- pdf print styles settings
 def setup(app):
     app.add_stylesheet('css/print-reset.css')
@@ -49,38 +36,60 @@ def setup(app):
     app.add_javascript('js/print.js')
 
 """
-    )
 
-    sphinx_autobuild_extension = quickstart_plus.AutoBuildExtension(
-        "ext_autobuild", "Watch a directory and rebuild the documentation",
-        makefile="""
+additional_make = """
 livehtml:
-\tsphinx-autobuild -b html {0} $(ALLSPHINXOPTS) $(BUILDDIR)/html
-""",
-        new_makefile="""
-livehtml:
-\tsphinx-autobuild -b html {0} $(SOURCEDIR) $(BUILDDIR)/html
-""",
-    )
+\tsphinx-autobuild -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+"""
 
-    quickstart_plus.qsp_extensions = [
-        sphinx_blockdiag_extension,
-        sphinx_rtd_theme_extension,
-        sphinx_autobuild_extension,
-        sphinx_pdf_print_style
-    ]
 
-    # Run sphinx-quickstart-plus.
-    quickstart_plus.main(argv)
+def patch_generate(original_d, overwrite=True, silent=False, templatedir=None):
+    global d
+    d = copy.copy(original_d)
+    generate(original_d, overwrite, silent=False, templatedir=None)
+
+
+def main(argv=sys.argv[1:]):
+    # Patch original generate function
+    quickstart.generate = patch_generate
+
+    # Run sphinx-quickstart
+    return_code = quickstart.main(argv)
+
+    if return_code: 
+        return return_code
+
+    # TODO: quickstart.get_parser を拡張する
+    # Sphinx 1.6.5 で下記対応がなされているが、pip install した Sphinx 1.6.5 で
+    # このコードが存在しないため、反映されたら実装をする
+    # https://github.com/sphinx-doc/sphinx/commit/101b2893516dbbfb92767efff1c30488e651ccfc
+    # いまいまは直書きで対応する
+    #
+    # https://github.com/pashango2/sphinx-qsp
+    # これにPR送ってもよし
+    srcdir = d['sep'] and os.path.join(d['path'], 'source') or d['path']
+    conf_path = os.path.join(srcdir, 'conf.py')
+    make_path = os.path.join(d['path'], 'Makefile')
+
+    with open(conf_path, 'a') as f:
+        f.write(additional_config)
+
+    if d.get('makefile', False):
+        with open(make_path, 'a') as f:
+            f.write(additional_make)
 
     # Copy files for pdf print style
-    d = quickstart_plus.hook_d
-    if d['pdf_print_style']:
+    if d.get('pdf_print_style', False):
         source = d['sep'] and os.path.join(d['path'], 'source') or d['path']
         prefix = d['dot'] or '_'
         shutil.copytree('/files/css', f'{source}/{prefix}static/css')
         shutil.copytree('/files/js', f'{source}/{prefix}static/js')
 
+    if return_code:
+        return return_code
+
+    return 0
+
 
 if __name__ == '__main__':
-    main(sys.argv)
+    sys.exit(main(sys.argv[1:]))
