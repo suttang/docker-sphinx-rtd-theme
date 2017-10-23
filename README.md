@@ -2,34 +2,49 @@
 
 ## Quickstart
 
-Build an image from the Dockerfile
+To start `suttang/sphinx-rtd-theme`, You can use `sphinx-quickstart`
 
-```
-$ docker build -t "suttang/sphinx-rtd-theme" .
-```
-
-Create basic configuration
+http://docs.readthedocs.io/en/latest/getting_started.html
 
 ```
 docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme sphinx-quickstart
 ```
 
-http://docs.readthedocs.io/en/latest/getting_started.html
+```
+docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme sphinx-quickstart -q -p "YourProjectName" -a "suttang <suttang@gmail.com>" -v 1.0.0 --sep --no-batchfile 
+```
 
-Build your documents
+
+## Build your documents
+
+The default `CMD` of `suttang/sphinx-rtd-theme` is `make html`.
 
 ```
 docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme
 ```
 
-http://docs.readthedocs.io/en/latest/builds.html
-
-or Use autobuild
+Your can use your favorite build commands.
 
 ```
+# make html
+docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme make html
+
+# sphinx-build
+docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme sphinx-build -b html source build
+
+# use autobuild
 docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme make livehtml
 ```
 
-https://pypi.python.org/pypi/sphinx-autobuild
+This dockerfile include [sphinx-autobuild](https://github.com/GaretJax/sphinx-autobuild).
+You can use `sphinx-autobuild` with `make livehtml` or `sphinx-autobuild $DOCS $DEST`
+
+
+## Build dockerfile
+
+```
+docker build -t "suttang/sphinx-rtd-theme" .
+```
+
 
 Thank you.
