@@ -40,7 +40,7 @@ def setup(app):
 
 additional_make = """
 livehtml:
-\tsphinx-autobuild -b html $(SOURCEDIR) $(BUILDDIR)/html
+\tsphinx-autobuild -b html $(SOURCEDIR) $(BUILDDIR)/html -H 0.0.0.0
 """
 
 

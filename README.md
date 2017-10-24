@@ -19,7 +19,7 @@ docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme sphi
 
 The default `CMD` of `suttang/sphinx-rtd-theme` is `make html`.
 
-```
+``` 
 docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme
 ```
 
@@ -31,13 +31,17 @@ docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme make
 
 # sphinx-build
 docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme sphinx-build -b html source build
-
-# use autobuild
-docker run --rm -it -v $(pwd)/documents:/documents suttang/sphinx-rtd-theme make livehtml
 ```
 
-This dockerfile include [sphinx-autobuild](https://github.com/GaretJax/sphinx-autobuild).
-You can use `sphinx-autobuild` with `make livehtml` or `sphinx-autobuild $SOURCE $OUTPUT`
+This dockerfile include [sphinx-autobuild](https://github.com/GaretJax/sphinx-autobuild)
+
+```
+# use autobuild with make
+docker run --rm -it -v $(pwd)/documents:/documents -p 8000:8000 suttang/sphinx-rtd-theme make livehtml
+
+# use autobuild with sphinx-autobuild
+docker run --rm -it -v $(pwd)/documents:/documents -p 8000:8000 suttang/sphinx-rtd-theme sphinx-autobuild -b html $SOURCE $OUTPUT -H 0.0.0.0
+```
 
 
 ## Build dockerfile
