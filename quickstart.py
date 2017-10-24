@@ -1,6 +1,7 @@
 import os
 import sys
 import copy
+import shutil
 
 from sphinx import quickstart
 from sphinx.quickstart import generate
@@ -56,7 +57,7 @@ def main(argv=sys.argv):
     # Run sphinx-quickstart
     return_code = quickstart.main(argv)
 
-    if return_code: 
+    if return_code:
         return return_code
 
     # TODO: quickstart.get_parser を拡張する
@@ -79,16 +80,12 @@ def main(argv=sys.argv):
             f.write(additional_make)
 
     # Copy files for pdf print style
-    if d.get('pdf_print_style', False):
-        source = d['sep'] and os.path.join(d['path'], 'source') or d['path']
-        prefix = d['dot'] or '_'
-        shutil.copytree('/files/css', f'{source}/{prefix}static/css')
-        shutil.copytree('/files/js', f'{source}/{prefix}static/js')
+    source = d['sep'] and os.path.join(d['path'], 'source') or d['path']
+    prefix = d['dot'] or '_'
+    shutil.copytree('/files/css', f'{source}/{prefix}static/css')
+    shutil.copytree('/files/js', f'{source}/{prefix}static/js')
 
-    if return_code:
-        return return_code
-
-    return 0
+    return return_code
 
 
 if __name__ == '__main__':
